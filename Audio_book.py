@@ -1,9 +1,17 @@
 #IMport Libarys
 from gtts import gTTS
 import PyPDF2
+from tkinter import Tk, filedialog
 
 #open file
-pdf_file = open('','')
+pdf_file = filedialog.askopenfilename(
+    title="Select a PDF file",
+    filetypes=[("PDF Files", "*.pdf")]
+)
+
+if not pdf_file:
+    print("No file selected. Closing...")
+    exit()
 
 #Create reader object
 pdf_Reader = PyPDF2.PdfFileReader(pdf_file)
