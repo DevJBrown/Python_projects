@@ -29,9 +29,9 @@ class Creature:
             self.alive = False
             print(f"{self.name} died of starvation!")
 
-        elif self.age >= self.max_age:
+        if self.age >= self.max_age:
             self.alive = False
-            print(f"{self.name} died of old age!")
+            print(f"{self.name} died of old age ;( she was {self.age})")
 
 
     def mate(self, creature2):
@@ -41,7 +41,7 @@ class Creature:
          self.energy -= 2
          creature2.energy -= 2
 
-        baby_name = random.randint(1, 1000)
+        baby_name = input("What should we name the baby?")
         baby = Creature(baby_name)
 
         creatures.append(baby)
