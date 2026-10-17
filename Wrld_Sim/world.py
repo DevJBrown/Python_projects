@@ -1,5 +1,28 @@
+import json
 import random
-import pathlib
+from pathlib import Path
+
+DATA_FOLDER = Path(r"C:\\Users\\theyt\\.vscode\\Wrld_Sim\\world_data")
+DATA_FOLDER.mkdir(exist_ok=True)
+
+DEATH_LOG = DATA_FOLDER / "death_log.txt"
+WORLD_HISTORY = DATA_FOLDER / "world_history.txt"
+CREATURE_FILES = DATA_FOLDER / "creatures.json"
+
+DEATH_LOG.touch(exist_ok=True)
+WORLD_HISTORY.touch(exist_ok=True)
+CREATURE_FILES.touch(exist_ok=True)
+
+
+def log_event(message):
+    with WORLD_HISTORY.open("a", encoding="utf-8") as file:
+        file.write(message + "\n")
+
+def log_death(creature, turn, cause):
+    message = (f"{creature.name} died at age {creature.age} on turn {turn} due to {cause} with {creature.energy} energy left.")
+    with DEATH_LOG.open("a", encoding="utf-8") as file:
+        file.write(message + "\n")
+    
 
 class Creature:
     def __init__(self, name, energy=None, age=0):
@@ -28,10 +51,12 @@ class Creature:
         if self.energy <= 0:
             self.alive = False
             print(f"{self.name} died of starvation!")
+            log_death(self, turn, "starvation")
 
         if self.age >= self.max_age:
             self.alive = False
             print(f"{self.name} died of old age ;( she was {self.age})")
+            log_death(self, turn, "old age")
 
 
     def mate(self, creature2):
@@ -47,6 +72,8 @@ class Creature:
         creatures.append(baby)
 
         print(f"The baby is name {baby_name}")
+        log_event(f"{self.name} and {creature2.name} mated and had a baby named {baby_name}.")
+        
 
 
 # Create the starting population
